@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}{{ tenant.name }} - Tenant Details{% endblock %}
+
+{% block content %}
+<section id="tenant-detail" class="tenant-detail section">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col text-center">
+        <h1>{{ tenant.name }}</h1>
+        <p class="text-muted">Detailed information about the tenant</p>
+      </div>
+    </div>
+
+    <!-- Tenant Information -->
+    <div class="row g-4">
+      <!-- Tenant Contact Details -->
+      <div class="col-md-6">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            <h5>Contact Information</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Email:</strong> {{ tenant.email }}</p>
+            <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+            <p><strong>Move-In Date:</strong> {{ tenant.move_in_date|date:"F j, Y" }}</p>
+            <p>
+              <strong>Move-Out Date:</strong>
+              {% if tenant.move_out_date %}
+                {{ tenant.move_out_date|date:"F j, Y" }}
+              {% else %}
+                <span class="text-muted">N/A</span>
+              {% endif %}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Property Information -->
+      <div class="col-md-6">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            <h5>Property Information</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Name:</strong> {{ tenant.property.name }}</p>
+            <p><strong>Address:</strong> {{ tenant.property.address }}</p>
+            <p><strong>Rent:</strong> KES {{ tenant.property.rent }}</p>
+            <p><strong>Details:</strong></p>
+            <ul>
+              <li><strong>Area:</strong> {{ tenant.property.area }} m²</li>
+              <li><strong>Beds:</strong> {{ tenant.property.beds }}</li>
+              <li><strong>Baths:</strong> {{ tenant.property.baths }}</li>
+              <li><strong>Garages:</strong> {{ tenant.property.garages }}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Payment History -->
+    <div class="row g-4 mt-4">
+      <div class="col-md-12">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            <h5>Payment History</h5>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Amount (KES)</th>
+                  <th>Status</th>
+                  <th>Method</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for payment in tenant.payments.all %}
+                <tr>
+                  <td>{{ payment.payment_date|date:"F j, Y" }}</td>
+                  <td>{{ payment.amount }}</td>
+                  <td>
+                    <span class="badge
+                      {% if payment.status == 'paid' %}bg-success
+                      {% elif payment.status == 'due' %}bg-danger
+                      {% else %}bg-warning{% endif %}">
+                      {{ payment.status }}
+                    </span>
+                  </td>
+                  <td>{{ payment.payment_method|capfirst }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                  <td colspan="4" class="text-center text-muted">No payment history available.</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Back -->
+    <div class="row mt-4">
+      <div class="col text-center">
+        <a href="{% url 'tenants' %}" class="btn btn-outline-secondary">Back to Tenants</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Tenant Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ tenant.name }}</h1>
+<h2>Your Account</h2>
+<p>Rent Due: ${{ tenant.rent_due }}</p>
+<p>Water Due: ${{ tenant.water_due }}</p>
+<p>Property: {{ tenant.property.name }}</p>
+{% endblock %}

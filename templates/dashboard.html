@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - StaySync{% endblock %}
+
+{% block content %}
+<section class="dashboard section">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="text-center">Welcome to StaySync Dashboard</h1>
+        <p class="text-center text-muted">Manage your properties, tenants, and payments efficiently.</p>
+      </div>
+    </div>
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+      <div class="col-md-3">
+        <div class="card text-center shadow border-0">
+          <div class="card-body">
+            <i class="bi bi-house-door-fill text-primary fs-1 mb-2"></i>
+            <h5 class="card-title">Total Properties</h5>
+            <p class="card-text fs-3">{{ summary.total_properties }}</p>
+            <a href="{% url 'properties' %}" class="btn btn-outline-primary btn-sm">View Properties</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center shadow border-0">
+          <div class="card-body">
+            <i class="bi bi-people-fill text-primary fs-1 mb-2"></i>
+            <h5 class="card-title">Total Tenants</h5>
+            <p class="card-text fs-3">{{ summary.total_tenants }}</p>
+            <a href="{% url 'tenants' %}" class="btn btn-outline-primary btn-sm">View Tenants</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center shadow border-0">
+          <div class="card-body">
+            <i class="bi bi-currency-exchange text-primary fs-1 mb-2"></i>
+            <h5 class="card-title">Total Rent Due</h5>
+            <p class="card-text fs-3">KES {{ summary.total_rent_due }}</p>
+            <a href="#" class="btn btn-outline-primary btn-sm">View Details</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center shadow border-0">
+          <div class="card-body">
+            <i class="bi bi-wallet2 text-primary fs-1 mb-2"></i>
+            <h5 class="card-title">Paid This Month</h5>
+            <p class="card-text fs-3">KES {{ summary.paid_this_month }}</p>
+            <a href="#" class="btn btn-outline-primary btn-sm">View Payments</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Recent Payments</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              {% for payment in recent_payments %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ payment.tenant.name }} paid KES {{ payment.amount }}</span>
+                <small class="text-muted">{{ payment.payment_date }}</small>
+              </li>
+              {% empty %}
+              <li class="list-group-item text-center text-muted">No recent payments found.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Recent Tenants</h5>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              {% for tenant in recent_tenants %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ tenant.name }}</span>
+                <small class="text-muted">Joined on {{ tenant.move_in_date }}</small>
+              </li>
+              {% empty %}
+              <li class="list-group-item text-center text-muted">No recent tenants found.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4 mt-4">
+      <div class="col-md-12">
+        <div class="card shadow border-0">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Rent Collection Overview</h5>
+          </div>
+          <div class="card-body">
+            <canvas id="rentChart" height="100"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Chart.js Integration -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const rentData = {{ monthly_rent|safe }};  // Dynamic data passed from the view
+  const ctx = document.getElementById('rentChart').getContext('2d');
+  const rentChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+      datasets: [{
+        label: 'Rent Collected (KES)',
+        data: rentData,
+        backgroundColor: '#0056b3',
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}

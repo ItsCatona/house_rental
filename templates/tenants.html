@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Tenants - StaySync{% endblock %}
+
+{% block content %}
+<section id="tenants" class="tenants section">
+  <div class="container">
+    <!-- Page Header -->
+    <div class="row mb-4">
+      <div class="col">
+        <h1 class="text-center">Tenant Management</h1>
+        <p class="text-center text-muted">View and manage tenant details and payments.</p>
+      </div>
+    </div>
+
+   <div>
+       <a href="{% url 'create-tenant' %}" class="btn btn-primary mb-3">Add Tenant</a>
+
+
+   </div>
+
+    <!-- Tenant Cards -->
+    <div class="row g-4">
+      {% for tenant in tenants %}
+      <div class="col-md-6">
+        <div class="card shadow-lg border-0">
+          <!-- Tenant Details -->
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">{{ tenant.name }}</h5>
+          </div>
+          <div class="card-body">
+            <p><strong>Email:</strong> {{ tenant.email }}</p>
+            <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+
+           <a href="{% url 'edit-tenant' tenant.id %}" class="btn btn-warning btn-sm">Edit</a>
+           <a href="{% url 'delete-tenant' tenant.id %}" class="btn btn-danger btn-sm">Delete</a>
+
+            <hr>
+            <!-- Property Details -->
+            <h6>Property Details</h6>
+            <p><strong>Name:</strong> {{ tenant.property.name }}</p>
+            <p><strong>Address:</strong> {{ tenant.property.address }}</p>
+            <p><strong>Rent:</strong> KES {{ tenant.property.rent }}</p>
+            <hr>
+            <!-- Payment History -->
+            <h6>Payments</h6>
+            <ul class="list-group">
+              {% for payment in tenant.payments.all %}
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                <span>{{ payment.payment_date|date:"F Y" }} - KES {{ payment.amount }}</span>
+                <span class="badge
+                  {% if payment.status == 'paid' %}bg-success
+                  {% elif payment.status == 'due' %}bg-danger
+                  {% else %}bg-warning{% endif %}">
+                  {{ payment.status }}
+                </span>
+              </li>
+              {% empty %}
+              <li class="list-group-item text-center text-muted">No payments found.</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <!-- Card Footer -->
+          <div class="card-footer text-center">
+            <a href="{% url 'tenant-detail' tenant.id %}" class="btn btn-outline-primary btn-sm">View More</a>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <!-- No Tenants Found -->
+      <div class="col-12 text-center">
+        <p class="text-muted">No tenants available.</p>
+      </div>
+      {% endfor %}
+    </div>
+
+
+
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+
+{% block title %}Landlord Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome, Landlord</h1>
+<h2>Properties</h2>
+<table class="table table-info container ">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Rent</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for property in properties %}
+        <tr>
+            <td>{{ property.name }}</td>
+            <td>{{ property.address }}</td>
+            <td>{{ property.rent }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h2>Tenants</h2>
+<table class="table table-warning container">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Phone</th>
+            <th>Rent Due</th>
+            <th>Water Due</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for tenant in tenants %}
+        <tr>
+            <td>{{ tenant.name }}</td>
+            <td>{{ tenant.phone }}</td>
+            <td>{{ tenant.rent_due }}</td>
+            <td>{{ tenant.water_due }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

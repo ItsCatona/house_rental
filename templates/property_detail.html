@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}{{ property.name }} - StaySync{% endblock %}
+
+{% block content %}
+<section class="property-detail section">
+  <div class="container">
+    <div class="row">
+      <!-- Property Image -->
+      <div class="col-md-6">
+        <img src="{{ property.image.url }}" class="img-fluid rounded" alt="{{ property.name }}">
+      </div>
+      <!-- Property Details -->
+      <div class="col-md-6">
+        <h1>{{ property.name }}</h1>
+        <p><strong>Address:</strong> {{ property.address }}</p>
+        <p><strong>Rent:</strong> KES {{ property.rent }}</p>
+        <p><strong>Details:</strong></p>
+        <ul>
+          <li><strong>Area:</strong> {{ property.area }} m²</li>
+          <li><strong>Beds:</strong> {{ property.beds }}</li>
+          <li><strong>Baths:</strong> {{ property.baths }}</li>
+          <li><strong>Garages:</strong> {{ property.garages }}</li>
+        </ul>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-md-12">
+        <a href="{% url 'properties' %}" class="btn btn-secondary">Back to Properties</a>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

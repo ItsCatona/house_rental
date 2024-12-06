@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Tenant{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+  <h1>Are you sure you want to delete {{ tenant.name }}?</h1>
+  <form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a href="{% url 'tenants' %}" class="btn btn-secondary">Cancel</a>
+  </form>
+</section>
+{% endblock %}
