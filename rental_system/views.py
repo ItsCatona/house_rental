@@ -23,7 +23,6 @@ from django.contrib import messages
 from .forms import TenantForm, PropertyForm
 
 
-
 # Create your views here.
 def base(request):
     return render(request, 'base.html')
@@ -228,6 +227,82 @@ def delete_property(request, property_id):
         messages.success(request, "Property deleted successfully!")
         return redirect('properties')
     return render(request, 'delete_property.html', {'property': property})
+
+
+
+def payments_view(request):
+    if request.method == 'POST':
+        payment_id = request.POST.get('payment_id')
+        payment_method = request.POST.get('payment_method')
+
+        payment = get_object_or_404(Payment, id=payment_id)
+        payment.payment_date = date.today()
+        payment.payment_method = payment_method
+        payment.status = 'paid'
+        payment.save()
+        return redirect('payments')  # Redirect to refresh the page
+
+    payments = Payment.objects.select_related('tenant').all()
+    return render(request, 'payments.html', {'payments': payments})
+
+
+def first_payment(request, tenant_id):
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+
+    if request.method == 'POST':
+        first_rent = request.POST.get('first_rent')
+        deposit = request.POST.get('deposit')
+        payment_method = request.POST.get('payment_method')
+
+        # Record deposit payment
+        if deposit:
+            Payment.objects.create(
+                tenant=tenant,
+                month=date.today(),
+                amount=deposit,
+                payment_date=date.today(),
+                payment_method=payment_method,
+                status='paid',
+                description='Deposit'
+            )
+            tenant.deposit_paid = True
+
+        # Record first rent payment
+        if first_rent:
+            Payment.objects.create(
+                tenant=tenant,
+                month=date.today(),
+                amount=first_rent,
+                payment_date=date.today(),
+                payment_method=payment_method,
+                status='paid',
+                description='First Rent'
+            )
+
+        tenant.save()
+        return redirect('payments')  # Redirect to payments page
+
+    return render(request, 'first_payment.html', {'tenant': tenant})
+
+
+def move_out(request, tenant_id=None):
+    if tenant_id is None:
+        # Redirect to tenants list if no tenant_id is provided
+        return redirect('tenants')
+
+    tenant = get_object_or_404(Tenant, id=tenant_id)
+    debts = tenant.calculate_debts()  # Calculate outstanding payments
+
+    if request.method == 'POST':
+        # Perform move-out actions
+        tenant.move_out_date = date.today()
+        tenant.property = None  # Free the property
+        tenant.save()
+        return redirect('tenants')  # Redirect to tenants list
+
+    return render(request, 'move_out.html', {'tenant': tenant, 'debts': debts})
+
+
 
 
 

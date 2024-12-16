@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Move Out{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <h1>Move Out Process for {{ tenant.name }}</h1>
+    <p><strong>Phone:</strong> {{ tenant.phone }}</p>
+    <p><strong>Email:</strong> {{ tenant.email }}</p>
+    <p><strong>Property:</strong> {{ tenant.property.name if tenant.property else 'No Property Assigned' }}</p>
+    <p><strong>Debts:</strong> {{ debts|floatformat:2 }}</p>
+
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Confirm Move Out</button>
+    </form>
+</section>
+{% endblock %}

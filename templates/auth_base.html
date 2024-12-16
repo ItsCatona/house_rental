@@ -9,15 +9,15 @@
   <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
 </head>
-<body class="auth-page">
-  <main>
-    {% block content %}
-    {% endblock %}
-  </main>
+<body class="this-page">
+<div class="container my-5">
+        {% block content %}
+        {% endblock %}
+    </div>
+
   <!-- Footer (Optional) -->
-  <footer class="text-center py-3">
-    <p>&copy; {{ year }} StaySync. All Rights Reserved.</p>
-  </footer>
+
+
   <!-- Bootstrap JS -->
   <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 </body>

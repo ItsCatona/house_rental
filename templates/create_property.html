@@ -3,7 +3,7 @@
 {% block title %}Add House{% endblock %}
 
 {% block content %}
-<section class="container py-5">
+<section class="container py-5" enctype="multipart/form-data" >
   <h1>Add House</h1>
   <form method="POST">
     {% csrf_token %}

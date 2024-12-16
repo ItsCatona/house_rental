@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% load static %}
+    <link href="{% static 'assets/img/home-button.png' %}" rel="icon">
     <title>{% block title %}StaySync - Your Rental Solution{% endblock %}</title>
 
     <!-- Fonts and Styles -->
@@ -132,9 +133,9 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/properties/">Properties</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/properties/">Houses</a></li>
                     <li class="nav-item"><a class="nav-link" href="/tenants/">Tenants</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/contact/">Contact</a></li>
+                    <!--<li class="nav-item"><a class="nav-link" href="/contact/">Contact</a></li> -->
                 </ul>
             </div>
         </div>
@@ -153,7 +154,7 @@
                 <!-- About Section -->
                 <div class="col-md-4">
                     <h5>About StaySync</h5>
-                    <p>StaySync offers seamless property and tenant management solutions for landlords and tenants. We simplify your rental experience.</p>
+                    <p>StaySync offers seamless rental houses and tenant management solutions for landlords. We simplify your rental experience.</p>
                 </div>
 
                 <!-- Links Section -->
@@ -161,7 +162,7 @@
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="/">Home</a></li>
-                        <li><a href="/properties/">Properties</a></li>
+                        <li><a href="/properties/">Houses</a></li>
                         <li><a href="/tenants/">Tenants</a></li>
                         <li><a href="/contact/">Contact</a></li>
                     </ul>

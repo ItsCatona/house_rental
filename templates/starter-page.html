@@ -6,7 +6,9 @@
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
   <title>Welcome to StaySync</title>
   {% load static %}
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="{% static 'assets/img/home-button.png' %}" rel="icon">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
   <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
@@ -95,10 +97,10 @@
       <nav class="nav justify-content-center">
         <a class="nav-link text-white" href="/">Home</a>
         <a class="nav-link text-white" href="/dashboard/">Dashboard</a>
-        <a class="nav-link text-white" href="/about/">About</a>
-        <a class="nav-link text-white" href="/services/">Services</a>
-        <a class="nav-link text-white" href="/properties/">Properties</a>
-        <a class="nav-link text-white" href="/contact/">Contact</a>
+        <a class="nav-link text-white" href="/properties/">Houses</a>
+       <!-- <a class="nav-link text-white" href="/move-out/">Moving out</a>
+        <a class="nav-link text-white" href="/first-payment/">First</a>-->
+       <!-- <a class="nav-link text-white" href="/contact/">Contact</a> -->
       </nav>
     </div>
   </header>
@@ -107,11 +109,14 @@
   <section class="hero">
     <div class="container">
       <h1>Welcome to StaySync</h1>
-      <p>Your trusted platform for seamless property and tenant management.</p>
+      <p>Your trusted platform for seamless rental houses and tenant management.</p>
       <div class="cta-buttons">
         <a href="/dashboard/" class="btn btn-outline-secondary">Dashboard</a>
-        <a href="/properties/" class="btn btn-primary">Explore Properties</a>
+        <a href="/properties/" class="btn btn-primary">Rental Houses</a>
         <a href="/tenants/" class="btn btn-outline-light">Manage Tenants</a>
+        <!--<a href="/payments/" class="btn btn-outline-light">Payments</a>-->
+       <!-- <a href="/move-out/" class="btn btn-outline-light">Move out</a>
+        <a href="/first-payment/" class="btn btn-outline-light">First payment</a>-->
       </div>
     </div>
   </section>

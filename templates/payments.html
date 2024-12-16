@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Payments{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <h1>Payments</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Tenant</th>
+                <th>Month</th>
+                <th>Amount</th>
+                <th>Payment Date</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for payment in payments %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ payment.tenant.name }}</td>
+                <td>{{ payment.month|date:"F Y" }}</td>
+                <td>{{ payment.amount }}</td>
+                <td>
+                    {% if payment.payment_date %}
+                        {{ payment.payment_date|date:"Y-m-d" }}
+                    {% else %}
+                        Not Paid
+                    {% endif %}
+                </td>
+                <td>{{ payment.get_payment_method_display }}</td>
+                <td>
+                    {% if payment.status == "paid" %}
+                        <span class="badge bg-success">Paid</span>
+                    {% elif payment.status == "due" %}
+                        <span class="badge bg-danger">Due</span>
+                    {% else %}
+                        <span class="badge bg-warning">New</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if payment.status != "paid" %}
+                        <form method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="payment_id" value="{{ payment.id }}">
+                            <select name="payment_method" class="form-select form-select-sm" required>
+                                <option value="mpesa">M-Pesa</option>
+                                <option value="cash">Cash</option>
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-primary mt-1">Mark as Paid</button>
+                        </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+{% endblock %}

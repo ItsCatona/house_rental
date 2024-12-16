@@ -22,7 +22,6 @@
     </div>
 
   <div>
-      <a href="{% url 'create-property' %}" class="btn btn-primary mb-3">Add Property</a>
 
 
    </div>
@@ -35,7 +34,7 @@
           <div class="row g-0">
             <!-- Property Image -->
             <div class="col-md-4">
-              <img src="{{ property.image.url }}" class="img-fluid rounded-start" alt="{{ property.name }}">
+              <img src="{{ property.image.url }}" class="img-fluid rounded-start  w-50 h-50" alt="{{ property.name }}">
             </div>
             <!-- Property Details -->
             <div class="col-md-8">

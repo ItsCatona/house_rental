@@ -16,20 +16,26 @@ class Property(models.Model):
     def __str__(self):
         return self.name
 
+
+
 class Tenant(models.Model):
-    name = models.CharField(max_length=220)
+    name = models.CharField(max_length=255)
     phone = models.CharField(max_length=15)
     email = models.EmailField()
-    property = models.ForeignKey(Property, on_delete=models.CASCADE)
-    rent_due = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    water_due = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    property = models.ForeignKey('Property', on_delete=models.SET_NULL, null=True, related_name='tenants')
+    rent_due = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     move_in_date = models.DateField()
     move_out_date = models.DateField(null=True, blank=True)
+
+    def calculate_debts(self):
+        """Calculate any outstanding payments."""
+        total_due = Payment.objects.filter(tenant=self, status='due').aggregate(models.Sum('amount'))['amount__sum'] or 0
+        return total_due
 
     def __str__(self):
         return self.name
 
-# Payment model to store rent payments
+
 class Payment(models.Model):
     tenant = models.ForeignKey(Tenant, related_name='payments', on_delete=models.CASCADE)
     month = models.DateField()  # Represents the first day of the month for payment
@@ -41,9 +47,7 @@ class Payment(models.Model):
         choices=[('paid', 'Paid'), ('due', 'Due'), ('new', 'New')],
         default='new'
     )
-
-    def __str__(self):
-        return f"{self.tenant.name} - {self.month.strftime('%B %Y')} - {self.status}"
+    description = models.CharField(max_length=255, blank=True)  # e.g., "First Rent", "Deposit"
 
     def update_status(self):
         """Update payment status based on current date and payment."""
@@ -54,3 +58,6 @@ class Payment(models.Model):
         else:
             self.status = 'new'
         self.save()
+
+    def __str__(self):
+        return f"{self.tenant.name} - {self.month.strftime('%B %Y')} - {self.status}"

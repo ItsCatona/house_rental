@@ -1,11 +1,11 @@
 from django.contrib import admin
 from django.urls import path
 from rental_system import views
-from .views import properties_view
+from .views import properties_view, payments_view
 
 from .views import property_detail_view
 from .views import  tenant_detail_view
-from .views import contact_view
+from .views import contact_view, first_payment, move_out
 
 from django.contrib.auth import views as auth_views
 from .views import register_view
@@ -49,5 +49,9 @@ urlpatterns = [
     path('property/create/', create_property, name='create-property'),
     path('property/<int:property_id>/edit/', edit_property, name='edit-property'),
     path('property/<int:property_id>/delete/', delete_property, name='delete-property'),
+    path('payments/', payments_view, name='payments'),
+
+    path('first-payment/<int:tenant_id>/', first_payment, name='first_payment'),
+    path('move-out/<int:tenant_id>/', move_out, name='move_out'),
 
 ]
